@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PersonalVoiceAssistent</string>
+    <string name="app_intro_msg">Welcome To Your Personal Assistant Please Say \'Hello\'</string>
 </resources>
