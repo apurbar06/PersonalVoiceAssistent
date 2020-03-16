@@ -3,32 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/margin_md"
     tools:context=".MainActivity">
 
-    <LinearLayout
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout style="@style/SpeechBubbleContainer.Bot">
-
-            <TextView
-                style="@style/SpeechBubbleContainer.Text"
-                android:text="@string/app_intro_msg" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/SpeechBubbleContainer.User">
-
-            <TextView
-                style="@style/SpeechBubbleContainer.Text"
-                android:text="hello" />
-        </LinearLayout>
-
-    </LinearLayout>
+        android:padding="@dimen/margin_sm"
+        />
 
     <TextView
         style="@style/SpeechBubbleCommandPreview"
         android:text="hello how are you. i am fine give me some news"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:onClick="handelClick"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
