@@ -1,4 +1,4 @@
-package com.personalvoiceassistent.model;
+package com.personalvoiceassistent.handler;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.personalvoiceassistent.R;
+import com.personalvoiceassistent.model.Chat;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.personalvoiceassistent.model;
+package com.personalvoiceassistent.handler;
 
 import android.Manifest;
 import android.app.Activity;

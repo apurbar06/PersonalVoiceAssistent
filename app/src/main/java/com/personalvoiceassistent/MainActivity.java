@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.personalvoiceassistent.model.Chat;
-import com.personalvoiceassistent.model.ChatAdapter;
-import com.personalvoiceassistent.model.SpeechHandler;
+import com.personalvoiceassistent.handler.ChatAdapter;
+import com.personalvoiceassistent.handler.SpeechHandler;
 
 import java.util.ArrayList;
 
