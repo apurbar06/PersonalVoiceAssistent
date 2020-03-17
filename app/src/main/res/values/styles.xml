@@ -16,7 +16,7 @@
         <item name="android:layout_margin">@dimen/margin_sm</item>
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/speech_bubble_elevation
         </item>
-        <item name="android:padding">@dimen/margin_x_sm</item>
+<!--        <item name="android:padding">@dimen/margin_x_sm</item>-->
     </style>
 
     <style name="SpeechBubbleContainer.Bot" parent="SpeechBubbleContainer">

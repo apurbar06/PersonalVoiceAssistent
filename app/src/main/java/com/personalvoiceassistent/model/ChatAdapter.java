@@ -1,4 +1,4 @@
-package com.personalvoiceassistent;
+package com.personalvoiceassistent.model;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,16 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.personalvoiceassistent.model.Chat;
+import com.personalvoiceassistent.R;
 
 import java.util.ArrayList;
 
 
-class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
     private static final String TAG = "MyAdapter";
     private ArrayList<Chat> chats;
 
-    ChatAdapter(ArrayList<Chat> chats) {
+    public ChatAdapter(ArrayList<Chat> chats) {
         Log.d(TAG, "MyAdapter: ");
         this.chats = chats;
     }
