@@ -7,6 +7,6 @@
 
     <dimen name="margin_md">16dp</dimen>
     <dimen name="margin_sm">8dp</dimen>
-    <dimen name="margin_x_sm">4dp</dimen>
+    <dimen name="margin_x_sm">2dp</dimen>
 
 </resources>
