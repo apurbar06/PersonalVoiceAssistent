@@ -23,7 +23,7 @@ public class ActionDate extends BaseAction {
         String output = "NOT_FOUND";
         String output1 = new SimpleDateFormat("dd MMM").format(Calendar.getInstance().getTime());
         String output2 = new SimpleDateFormat("EEEE").format(Calendar.getInstance().getTime());
-        output = output1 + " Today is " + output2;
+        output = " Today is " + output2 + " It's " + output1;
         return output;
     }
 }
