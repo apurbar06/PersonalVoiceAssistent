@@ -6,6 +6,7 @@ import android.util.Log;
 import com.personalvoiceassistent.actions.ActionDate;
 import com.personalvoiceassistent.actions.ActionTime;
 import com.personalvoiceassistent.actions.Greetings;
+import com.personalvoiceassistent.actions.IntroduceItself;
 
 
 public class ActionHandler {
@@ -22,6 +23,7 @@ public class ActionHandler {
         ActionTime at = new ActionTime(mContext);
         ActionDate ad = new ActionDate(mContext);
         Greetings gr = new Greetings(mContext);
+        IntroduceItself intro = new IntroduceItself(mContext);
         if (at.doesMatch(msg)) {
             result = at.runCommand(msg);
             Log.d(TAG, "matchCommand: " + result);
@@ -34,6 +36,11 @@ public class ActionHandler {
             result = gr.runCommand(msg);
             Log.d(TAG, "matchCommand: " + result);
         }
+        else if (intro.doesMatch(msg)) {
+            result = intro.runCommand(msg);
+            Log.d(TAG, "matchCommand: " + result);
+        }
+
 
         return result;
 
