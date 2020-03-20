@@ -21,7 +21,9 @@ public class ActionDate extends BaseAction {
     @Override
     public String runCommand(String msg) {
         String output = "NOT_FOUND";
-        output = new SimpleDateFormat("dd:MM").format(Calendar.getInstance().getTime());
+        String output1 = new SimpleDateFormat("dd MMM").format(Calendar.getInstance().getTime());
+        String output2 = new SimpleDateFormat("EEEE").format(Calendar.getInstance().getTime());
+        output = output1 + " Today is " + output2;
         return output;
     }
 }

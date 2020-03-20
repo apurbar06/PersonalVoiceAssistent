@@ -24,7 +24,7 @@ public class ActionTime extends BaseAction {
     @Override
     public String runCommand(String msg) {
         String output = "NOT_FOUND";
-        output = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime());
+        output = new SimpleDateFormat("hh mm aa").format(Calendar.getInstance().getTime());
         return output;
     }
 }
