@@ -2,6 +2,11 @@ package com.personalvoiceassistent.actions;
 
 import android.content.Context;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+
 public class ActionTime extends BaseAction {
     private String MATCH_STR = "time";
 
@@ -18,6 +23,8 @@ public class ActionTime extends BaseAction {
 
     @Override
     public String runCommand(String msg) {
-        return "TIME";
+        String output = "NOT_FOUND";
+        output = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime());
+        return output;
     }
 }

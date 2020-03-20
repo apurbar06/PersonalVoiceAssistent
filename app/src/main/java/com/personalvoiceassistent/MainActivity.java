@@ -1,5 +1,6 @@
 package com.personalvoiceassistent;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,12 +9,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.personalvoiceassistent.handler.ActionHandler;
-import com.personalvoiceassistent.model.Chat;
 import com.personalvoiceassistent.handler.ChatAdapter;
 import com.personalvoiceassistent.handler.SpeechHandler;
+import com.personalvoiceassistent.model.Chat;
 
 import java.util.ArrayList;
 
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void partialResult(String msg) {
             Log.d(TAG, "partialResult: " + msg);
+            ActionHandler ah = new ActionHandler(MainActivity.this);
+            ah.tryRunCommand("dngds time ansklnd");
             textView.setText(msg);
         }
     };
@@ -48,34 +52,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ActionHandler ah = new ActionHandler(this);
-        ah.tryRunCommand("dngds time ansklnd");
-//
-//        LinearLayoutManager layout = new LinearLayoutManager(this);
-//        recyclerView = findViewById(R.id.recyclerView);
-//        textView = findViewById(R.id.previewText);
-//        audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-//
-//        chats.add(new Chat("hello", Chat.BOT));
-//        chats.add(new Chat("hi", Chat.USER));
-//        chats.add(new Chat("hello", Chat.BOT));
-//        chats.add(new Chat("hi", Chat.USER));
-//        chats.add(new Chat("hello", Chat.BOT));
-//        chats.add(new Chat("hasdi", Chat.USER));
-//
-//        chatAdapter = new ChatAdapter(chats);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(layout);
-//        recyclerView.setAdapter(chatAdapter);
-//        // speech handler config
-//        speechHandler = new SpeechHandler(this);
-//        speechHandler.requestRecordAudioPermission();
-//        speechHandler.enableRestart();
-//        speechHandler.initRecognition();
-//        speechHandler.addCallback(speechHandlerCallbacks);
-//        // speech handler is ready
-//        muteAudio(true);
-//        boolean success = speechHandler.startRecognition();
+
+
+        LinearLayoutManager layout = new LinearLayoutManager(this);
+        recyclerView = findViewById(R.id.recyclerView);
+        textView = findViewById(R.id.previewText);
+        audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+
+        chats.add(new Chat("hello", Chat.BOT));
+        chats.add(new Chat("hi", Chat.USER));
+        chats.add(new Chat("hello", Chat.BOT));
+        chats.add(new Chat("hi", Chat.USER));
+        chats.add(new Chat("hello", Chat.BOT));
+        chats.add(new Chat("hasdi", Chat.USER));
+
+        chatAdapter = new ChatAdapter(chats);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layout);
+        recyclerView.setAdapter(chatAdapter);
+        // speech handler config
+        speechHandler = new SpeechHandler(this);
+        speechHandler.requestRecordAudioPermission();
+        speechHandler.enableRestart();
+        speechHandler.initRecognition();
+        speechHandler.addCallback(speechHandlerCallbacks);
+        // speech handler is ready
+        muteAudio(true);
+        boolean success = speechHandler.startRecognition();
     }
 
     @Override
