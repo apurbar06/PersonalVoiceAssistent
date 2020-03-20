@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         public void onResult(String msg) {
             textView.setText(msg);
             ActionHandler ah = new ActionHandler(MainActivity.this);
-            String result = ah.tryRunCommand("who are you ?");
+            String result = ah.tryRunCommand(msg);
             chats.add(new Chat(msg, Chat.USER));
             if (result != null) {
                 chats.add(new Chat(result, Chat.BOT));
