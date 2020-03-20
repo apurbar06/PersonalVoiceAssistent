@@ -2,16 +2,18 @@ package com.personalvoiceassistent.actions;
 
 import android.content.Context;
 
-import java.util.ArrayList;
-
 public class Greetings extends BaseAction {
+
+    private String MATCH_STR = "hello";
 
     public Greetings(Context context) {
         super(context);
-        ArrayList<String> list =new ArrayList<String>();
-        list.add("hello");
-        list.add("hi");
-        this.MATCH_STR = list;
+    }
+
+    @Override
+    public boolean doesMatch(String msg) {
+        if (msg.toLowerCase().contains(MATCH_STR)) return true;
+        return false;
     }
 
     @Override
