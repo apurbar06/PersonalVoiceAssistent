@@ -4,9 +4,11 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import com.personalvoiceassistent.handler.SpeechHandler;
 import com.personalvoiceassistent.model.Chat;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,10 +36,14 @@ public class MainActivity extends AppCompatActivity {
         public void onResult(String msg) {
             textView.setText(msg);
             ActionHandler ah = new ActionHandler(MainActivity.this);
-            String result = ah.tryRunCommand(msg);
+            String result = ah.tryRunCommand("who are you ?");
             chats.add(new Chat(msg, Chat.USER));
             if (result != null) {
                 chats.add(new Chat(result, Chat.BOT));
+                int status = textToSpeech.speak(result,TextToSpeech.QUEUE_FLUSH, null);
+                if (status == TextToSpeech.ERROR) {
+                    Log.e("TTS", "Error in converting Text to Speech!");
+                }
             }
             chatAdapter.notifyDataSetChanged();
             recyclerView.smoothScrollToPosition(chats.size() - 1);
@@ -51,11 +58,31 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
+    TextToSpeech textToSpeech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int ttsLang = textToSpeech.setLanguage(Locale.US);
+
+                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
+                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "The Language is not supported!");
+                    } else {
+                        Log.i("TTS", "Language Supported.");
+                    }
+                    Log.i("TTS", "Initialization success.");
+                } else {
+                    Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
 
         LinearLayoutManager layout = new LinearLayoutManager(this);
@@ -96,12 +123,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        // lock device audio
-//        muteAudio(true);
-//        speechHandler.enableRestart();
-//        if (!speechHandler.isRecognising) {
-//            speechHandler.startRecognition();
-//        }
+        // lock device audio
+        muteAudio(true);
+        speechHandler.enableRestart();
+        if (!speechHandler.isRecognising) {
+            speechHandler.startRecognition();
+        }
 
     }
 
