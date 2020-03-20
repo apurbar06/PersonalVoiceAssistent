@@ -42,7 +42,10 @@ public class MainActivity extends AppCompatActivity {
                 chats.add(new Chat(result, Chat.BOT));
                 int status = textToSpeech.speak(result,TextToSpeech.QUEUE_FLUSH, null);
                 if (status == TextToSpeech.ERROR) {
-                    Log.e("TTS", "Error in converting Text to Speech!");
+                    Log.d(TAG,"TTS: error in converting Text to Speech!");
+                }else {
+                    Log.d(TAG,"TTS: success");
+
                 }
             }
             chatAdapter.notifyDataSetChanged();
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
+                muteAudio(false);
                 if (status == TextToSpeech.SUCCESS) {
                     int ttsLang = textToSpeech.setLanguage(Locale.US);
 
@@ -80,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
                 }
+                muteAudio(true);
             }
         });
 

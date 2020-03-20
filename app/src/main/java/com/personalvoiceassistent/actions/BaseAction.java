@@ -2,8 +2,11 @@ package com.personalvoiceassistent.actions;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
 public abstract class BaseAction {
     public Context mContext;
+    public ArrayList<String> MATCH_STR;
 
     public BaseAction(Context context) {
         this.mContext = context;
@@ -16,7 +19,17 @@ public abstract class BaseAction {
      *
      * @return boolean when match
      */
-    abstract public boolean doesMatch(String msg);
+    public boolean doesMatch(String base) {
+        boolean match = false;
+        for (String msg :
+                MATCH_STR) {
+            if(!match){
+
+                match = base.toLowerCase().contains(msg);
+            }
+        }
+        return match;
+    }
 
     /**
      * @return result of the command

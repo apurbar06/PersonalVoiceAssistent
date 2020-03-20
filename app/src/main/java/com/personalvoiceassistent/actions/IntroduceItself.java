@@ -2,18 +2,17 @@ package com.personalvoiceassistent.actions;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
 public class IntroduceItself extends BaseAction {
-    private String MATCH_STR = "who are you";
 
     public IntroduceItself(Context context) {
         super(context);
+        ArrayList<String> list =new ArrayList<String>();
+        list.add("who are you");
+        this.MATCH_STR = list;
     }
 
-    @Override
-    public boolean doesMatch(String msg) {
-        if (msg.toLowerCase().contains(MATCH_STR)) return true;
-        return false;
-    }
 
     @Override
     public String runCommand(String msg) {
