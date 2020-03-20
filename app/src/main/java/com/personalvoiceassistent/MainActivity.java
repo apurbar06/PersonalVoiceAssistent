@@ -32,7 +32,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onResult(String msg) {
             textView.setText(msg);
+            ActionHandler ah = new ActionHandler(MainActivity.this);
+            String result = ah.tryRunCommand(msg);
             chats.add(new Chat(msg, Chat.USER));
+            if (result != null) {
+                chats.add(new Chat(result, Chat.BOT));
+            }
             chatAdapter.notifyDataSetChanged();
             recyclerView.smoothScrollToPosition(chats.size() - 1);
             textView.setText("");
@@ -41,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void partialResult(String msg) {
             Log.d(TAG, "partialResult: " + msg);
-            ActionHandler ah = new ActionHandler(MainActivity.this);
-            ah.tryRunCommand("dngds time ansklnd");
+
             textView.setText(msg);
         }
     };
