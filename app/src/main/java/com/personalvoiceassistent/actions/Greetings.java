@@ -25,5 +25,6 @@ public class Greetings extends BaseAction {
         int i =r.nextInt(list.size());
         String result = list.get(i);
         return result;
+
     }
 }
