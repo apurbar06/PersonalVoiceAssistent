@@ -12,7 +12,7 @@ public class ActionDate extends BaseAction {
         super(context);
         ArrayList<String> list = new ArrayList<String>();
         list.add("date");
-        addList(list);
+        makeListToGlobalScope(list);
     }
 
     @Override

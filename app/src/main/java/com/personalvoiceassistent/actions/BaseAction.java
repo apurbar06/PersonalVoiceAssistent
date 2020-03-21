@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 public abstract class BaseAction {
     public Context mContext;
-    public ArrayList<String> MATCH_STR;
+    public ArrayList<String> globalList;
 
     public BaseAction(Context context) {
         this.mContext = context;
     }
 
-    public void addList(ArrayList<String> str) {
-        MATCH_STR = str;
+    public void makeListToGlobalScope(ArrayList<String> list) {
+        globalList = list;
     }
 
     /**
@@ -23,10 +23,9 @@ public abstract class BaseAction {
      */
     public boolean doesMatch(String base) {
         boolean match = false;
-        for (String msg : MATCH_STR) {
+        for (String item : globalList) {
             if (!match) {
-
-                match = base.toLowerCase().contains(msg);
+                match = base.toLowerCase().contains(item);
             }
         }
         return match;

@@ -18,7 +18,7 @@ public class Greetings extends BaseAction {
         list.add("hai");
         list.add("hey man");
         list.add("hey");
-        addList(list);
+        makeListToGlobalScope(list);
 
     }
 

@@ -3,8 +3,6 @@ package com.personalvoiceassistent.actions;
 import android.content.Context;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -13,7 +11,7 @@ public class ActionTime extends BaseAction {
         super(context);
         ArrayList<String> list =new ArrayList<String>();
         list.add("time");
-        addList(list);
+        makeListToGlobalScope(list);
     }
 
 
@@ -21,6 +19,6 @@ public class ActionTime extends BaseAction {
     public String runCommand(String msg) {
         String output = "NOT_FOUND";
         output = new SimpleDateFormat("hh mm aa").format(Calendar.getInstance().getTime());
-        return output;
+        return "It's " + output;
     }
 }
