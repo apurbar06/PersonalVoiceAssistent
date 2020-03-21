@@ -15,7 +15,7 @@
 
     <TextView
         style="@style/SpeechBubbleCommandPreview"
-        android:text="hello how are you. i am fine give me some news"
+        android:text="hello how are you?"
         tools:ignore="MissingConstraints"
         android:onClick="handelClick"
         android:id="@+id/previewText"

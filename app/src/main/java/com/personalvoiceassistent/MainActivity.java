@@ -95,12 +95,7 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.previewText);
         audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
 
-        chats.add(new Chat("hello", Chat.BOT));
-        chats.add(new Chat("hi", Chat.USER));
-        chats.add(new Chat("hello", Chat.BOT));
-        chats.add(new Chat("hi", Chat.USER));
-        chats.add(new Chat("hello", Chat.BOT));
-        chats.add(new Chat("hasdi", Chat.USER));
+
 
         chatAdapter = new ChatAdapter(chats);
         recyclerView.setHasFixedSize(true);
@@ -176,12 +171,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void handelClick(View view) {
-        // test code
-        chats.add(new Chat("hello", Chat.BOT));
-        chats.add(new Chat("hi", Chat.USER));
-        chatAdapter.notifyDataSetChanged();
-    }
 
 }
 

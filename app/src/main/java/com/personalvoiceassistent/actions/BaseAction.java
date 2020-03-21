@@ -21,8 +21,7 @@ public abstract class BaseAction {
      */
     public boolean doesMatch(String base) {
         boolean match = false;
-        for (String msg :
-                MATCH_STR) {
+        for (String msg : MATCH_STR) {
             if(!match){
 
                 match = base.toLowerCase().contains(msg);
