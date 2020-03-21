@@ -11,10 +11,9 @@ import java.util.Calendar;
 public class ActionTime extends BaseAction {
     public ActionTime(Context context) {
         super(context);
-
         ArrayList<String> list =new ArrayList<String>();
         list.add("time");
-        this.MATCH_STR = list;
+        addList(list);
     }
 
 

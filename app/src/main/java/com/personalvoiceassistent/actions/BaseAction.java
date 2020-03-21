@@ -12,7 +12,9 @@ public abstract class BaseAction {
         this.mContext = context;
     }
 
-    ;
+    public void addList(ArrayList<String> str) {
+        MATCH_STR = str;
+    }
 
     /**
      * check if the action is eligible for running
@@ -22,7 +24,7 @@ public abstract class BaseAction {
     public boolean doesMatch(String base) {
         boolean match = false;
         for (String msg : MATCH_STR) {
-            if(!match){
+            if (!match) {
 
                 match = base.toLowerCase().contains(msg);
             }

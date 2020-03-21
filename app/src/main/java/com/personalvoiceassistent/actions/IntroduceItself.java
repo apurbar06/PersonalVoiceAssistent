@@ -10,7 +10,7 @@ public class IntroduceItself extends BaseAction {
         super(context);
         ArrayList<String> list =new ArrayList<String>();
         list.add("who are you");
-        this.MATCH_STR = list;
+        addList(list);
     }
 
 
