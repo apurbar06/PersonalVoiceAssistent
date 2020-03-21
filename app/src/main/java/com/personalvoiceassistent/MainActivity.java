@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         // speech handler is ready
         muteAudio(true);
         boolean success = speechHandler.startRecognition();
+        chatAdapter.notifyDataSetChanged();
     }
 
     @Override

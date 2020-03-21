@@ -1,8 +1,8 @@
 package com.personalvoiceassistent.model;
 
 public class Chat {
-    public static final int BOT = 0;
-    public static final int USER = 1;
+    public static final int BOT = 1;
+    public static final int USER = 0;
     private String msg;
     private int speakerType;
 
