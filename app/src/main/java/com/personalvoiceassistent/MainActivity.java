@@ -5,8 +5,8 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,52 +25,77 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    TextToSpeech textToSpeech;
     private TextView textView;
     private ChatAdapter chatAdapter;
     private AudioManager audioManager;
     private RecyclerView recyclerView;
     private SpeechHandler speechHandler;
     private ArrayList<Chat> chats = new ArrayList<>();
+
     private SpeechHandler.Callbacks speechHandlerCallbacks = new SpeechHandler.Callbacks() {
         @Override
         public void onResult(String msg) {
-            textView.setText(msg);
+            // get action handler where all action is located
             ActionHandler ah = new ActionHandler(MainActivity.this);
+            // try to run command
+            // if successful return result
             String result = ah.tryRunCommand(msg);
+            // add user command to chat history
             chats.add(new Chat(msg, Chat.USER));
             if (result != null) {
+                // add bot command to chat history
                 chats.add(new Chat(result, Chat.BOT));
-                int status = textToSpeech.speak(result,TextToSpeech.QUEUE_FLUSH, null);
-                if (status == TextToSpeech.ERROR) {
-                    Log.d(TAG,"TTS: error in converting Text to Speech!");
-                }else {
-                    Log.d(TAG,"TTS: success");
-
-                }
+                // speak bot command loudly
+                speak(result);
             }
+            // notify our chat adapter data has changed so it can update
             chatAdapter.notifyDataSetChanged();
+            // scroll to bottom chat
             recyclerView.smoothScrollToPosition(chats.size() - 1);
+            // clear text preview of user command
             textView.setText("");
+            // restart speech handler
+            speechHandler.startRecognition();
         }
 
         @Override
         public void partialResult(String msg) {
             Log.d(TAG, "partialResult: " + msg);
-
             textView.setText(msg);
         }
     };
 
-    TextToSpeech textToSpeech;
+
+    private int speak(String text) {
+        // param is necessary for utterance
+        Bundle params = new Bundle();
+        params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "45a4sd");
+        int status = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            status = textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, params, "UniqueID");
+        } else {
+            status = textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
+
+        if (status == TextToSpeech.ERROR) {
+            Log.d(TAG, "TTS: error in converting Text to Speech!");
+        } else {
+            Log.d(TAG, "TTS: success");
+        }
+        return status;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // init text to speech
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                muteAudio(false);
                 if (status == TextToSpeech.SUCCESS) {
                     int ttsLang = textToSpeech.setLanguage(Locale.US);
 
@@ -84,17 +109,54 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
                 }
-                muteAudio(true);
             }
         });
+        textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String utteranceId) {
+                muteAudio(false);
+                // running ui on thread or the speech recognition service will not start
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        speechHandler.destroyRecognition();
+                    }
+                });
+                Log.d(TAG, "onStart: ");
+            }
 
+            @Override
+            public void onDone(String utteranceId) {
+                muteAudio(true);
+                // running ui on thread or the speech recognition service will not start
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        speechHandler.startRecognition();
+                    }
+                });
+                Log.d(TAG, "onDone: ");
+            }
+
+            @Override
+            public void onError(String utteranceId) {
+                muteAudio(true);
+                // running ui on thread or the speech recognition service will not start
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        speechHandler.startRecognition();
+                    }
+                });
+                Log.d(TAG, "onError: ");
+            }
+        });
 
 
         LinearLayoutManager layout = new LinearLayoutManager(this);
         recyclerView = findViewById(R.id.recyclerView);
         textView = findViewById(R.id.previewText);
         audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-
 
 
         chatAdapter = new ChatAdapter(chats);
@@ -104,12 +166,10 @@ public class MainActivity extends AppCompatActivity {
         // speech handler config
         speechHandler = new SpeechHandler(this);
         speechHandler.requestRecordAudioPermission();
-        speechHandler.enableRestart();
-        speechHandler.initRecognition();
         speechHandler.addCallback(speechHandlerCallbacks);
         // speech handler is ready
         muteAudio(true);
-        boolean success = speechHandler.startRecognition();
+        speechHandler.startRecognition();
         chatAdapter.notifyDataSetChanged();
     }
 
@@ -117,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         muteAudio(false);
-        speechHandler.disableRestart();
 
     }
 
@@ -126,10 +185,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         // lock device audio
         muteAudio(true);
-        speechHandler.enableRestart();
-        if (!speechHandler.isRecognising) {
-            speechHandler.startRecognition();
-        }
+        speechHandler.startRecognition();
 
     }
 
@@ -145,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         // release device audio
         muteAudio(false);
+        speechHandler.destroyRecognition();
     }
 
     /**

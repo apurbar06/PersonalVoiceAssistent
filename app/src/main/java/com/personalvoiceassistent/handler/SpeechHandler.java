@@ -17,8 +17,7 @@ import java.util.Arrays;
 
 public class SpeechHandler {
     private static final String TAG = "SpeechHandler";
-    public boolean isRecognising = false;
-    private boolean try_restart = false;
+    private Listener listener;
     private Intent recognizerIntent;
     private Activity pContext;
     private Callbacks callbacks;
@@ -26,25 +25,31 @@ public class SpeechHandler {
 
     public SpeechHandler(Activity c) {
         pContext = c;
-        Listener listener = new Listener();
+        listener = new Listener();
+        resetSpeechRecognizer();
+        initRecognition();
+        sr.startListening(recognizerIntent);
+    }
+
+    private void resetSpeechRecognizer() {
+
+        if (sr != null)
+            sr.destroy();
         sr = SpeechRecognizer.createSpeechRecognizer(pContext);
-        sr.setRecognitionListener(listener);
+        Log.i(TAG, "isRecognitionAvailable: " + SpeechRecognizer.isRecognitionAvailable(pContext));
+        if (SpeechRecognizer.isRecognitionAvailable(pContext)) {
+            sr.setRecognitionListener(listener);
+        } else {
+            Log.d(TAG, "resetSpeechRecognizer: error");
+        }
     }
-
-    public void enableRestart() {
-        try_restart = true;
-    }
-
-    public void disableRestart() {
-        try_restart = false;
-    }
-
 
     /**
      * creates a recognition intent
      */
     public void initRecognition() {
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "en");
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "voice.recognition.test");
@@ -56,17 +61,20 @@ public class SpeechHandler {
     }
 
 
-    public boolean startRecognition() {
-        Log.d(TAG, "startRecognition: ");
-        initRecognition();
-        if (recognizerIntent.resolveActivity(pContext.getPackageManager()) != null) {
-            isRecognising = true;
+    public void startRecognition() {
+        resetSpeechRecognizer();
+        if (recognizerIntent != null) {
             sr.startListening(recognizerIntent);
-            Log.i(TAG, "StartRecognition: Started Intent");
-            return true;
-        } else {
-            Log.d(TAG, "StartRecognition: Your Device Does Not support Speech Input");
-            return false;
+        }
+    }
+
+    public void stopRecognition() {
+        sr.stopListening();
+    }
+
+    public void destroyRecognition() {
+        if (sr != null) {
+            sr.destroy();
         }
     }
 
@@ -87,6 +95,7 @@ public class SpeechHandler {
          * @param msg message when full sentence is complete
          */
         void onResult(String msg);
+
         /**
          * @param msg when user is saying the words
          */
@@ -121,28 +130,25 @@ public class SpeechHandler {
 
         @Override
         public void onEndOfSpeech() {
+            sr.stopListening();
             Log.i(TAG, "onEndOfSpeech");
         }
 
         @Override
         public void onResults(Bundle results) {
             Log.i(TAG, "onResults");
-            isRecognising = false;
             String text = convertBundle(results);
             callbacks.onResult(text);
-            if (try_restart) {
-                startRecognition();
-            }
+//            startRecognition();
+
         }
 
         @Override
         public void onError(int errorCode) {
             String errorMessage = getErrorText(errorCode);
-            isRecognising = false;
-            if (try_restart) {
-                startRecognition();
-            }
             Log.i(TAG, "FAILED " + errorMessage);
+            resetSpeechRecognizer();
+            startRecognition();
         }
 
         @Override

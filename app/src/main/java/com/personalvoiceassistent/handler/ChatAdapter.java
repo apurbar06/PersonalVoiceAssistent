@@ -29,15 +29,20 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 
-        Chat chat = this.chats.get(viewType);
-        int layout = chat.isBot() ? R.layout.chat_bot : R.layout.chat_user;
+        int layout;
+        if (viewType == Chat.BOT) {
+            layout = R.layout.chat_bot;
+        } else {
+            layout = R.layout.chat_user;
+        }
         RelativeLayout view = (RelativeLayout) layoutInflater.inflate(layout, parent, false);
-        Log.d(TAG, String.format("onCreateViewHolder: %s", viewType));
+//        Log.d(TAG, String.format("onCreateViewHolder: %s", viewType));
         return new MyViewHolder(view);
     }
 
     @Override
     public int getItemViewType(int position) {
+//        Log.d(TAG, "getItemViewType: " + position);
         return chats.get(position).getSpeakerType();
     }
 
@@ -46,7 +51,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         TextView textView = holder.itemView.findViewById(R.id.txt);
         Chat chat = chats.get(position);
         textView.setText(chat.getMsg());
-        Log.d(TAG, String.format("onBindViewHolder: %s", position));
+//        Log.d(TAG, String.format("onBindViewHolder: %s", position));
 
     }
 
@@ -61,7 +66,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
         MyViewHolder(@NonNull RelativeLayout itemView) {
             super(itemView);
-            Log.d(TAG, "MyViewHolder: ");
+//            Log.d(TAG, "MyViewHolder: ");
             layout = itemView;
         }
     }
