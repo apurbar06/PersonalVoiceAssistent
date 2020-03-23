@@ -32,16 +32,20 @@ public class SpeechHandler {
     }
 
     private void resetSpeechRecognizer() {
-
-        if (sr != null)
-            sr.destroy();
-        sr = SpeechRecognizer.createSpeechRecognizer(pContext);
-        Log.i(TAG, "isRecognitionAvailable: " + SpeechRecognizer.isRecognitionAvailable(pContext));
-        if (SpeechRecognizer.isRecognitionAvailable(pContext)) {
-            sr.setRecognitionListener(listener);
-        } else {
-            Log.d(TAG, "resetSpeechRecognizer: error");
+        try{
+            if (sr != null)
+                sr.destroy();
+            sr = SpeechRecognizer.createSpeechRecognizer(pContext);
+            Log.i(TAG, "isRecognitionAvailable: " + SpeechRecognizer.isRecognitionAvailable(pContext));
+            if (SpeechRecognizer.isRecognitionAvailable(pContext)) {
+                sr.setRecognitionListener(listener);
+            } else {
+                Log.d(TAG, "resetSpeechRecognizer: error");
+            }
+        }catch (Exception ex){
+            Log.e(TAG, "resetSpeechRecognizer: ",ex );
         }
+
     }
 
     /**

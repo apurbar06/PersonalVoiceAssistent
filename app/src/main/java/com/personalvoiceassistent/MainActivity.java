@@ -32,12 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SpeechHandler speechHandler;
     private ArrayList<Chat> chats = new ArrayList<>();
+    ActionHandler ah;
 
     private SpeechHandler.Callbacks speechHandlerCallbacks = new SpeechHandler.Callbacks() {
         @Override
         public void onResult(String msg) {
-            // get action handler where all action is located
-            ActionHandler ah = new ActionHandler(MainActivity.this);
             // try to run command
             // if successful return result
             String result = ah.tryRunCommand(msg);
@@ -92,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // get action handler where all action is located
+        ah = new ActionHandler(MainActivity.this);
         // init text to speech
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override

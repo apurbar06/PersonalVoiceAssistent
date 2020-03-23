@@ -7,6 +7,7 @@ import com.personalvoiceassistent.actions.ActionDate;
 import com.personalvoiceassistent.actions.ActionTime;
 import com.personalvoiceassistent.actions.Greetings;
 import com.personalvoiceassistent.actions.IntroduceItself;
+import com.personalvoiceassistent.actions.WikipediaAction;
 
 
 public class ActionHandler {
@@ -24,6 +25,7 @@ public class ActionHandler {
         ActionDate ad = new ActionDate(mContext);
         Greetings gr = new Greetings(mContext);
         IntroduceItself intro = new IntroduceItself(mContext);
+        WikipediaAction wiki = new WikipediaAction(mContext);
         if (at.doesMatch(msg)) {
             result = at.runCommand(msg);
             Log.d(TAG, "matchCommand: " + result);
@@ -38,6 +40,10 @@ public class ActionHandler {
         }
         else if (intro.doesMatch(msg)) {
             result = intro.runCommand(msg);
+            Log.d(TAG, "matchCommand: " + result);
+        }
+        else if (wiki.doesMatch(msg)) {
+            result = wiki.runCommand(msg);
             Log.d(TAG, "matchCommand: " + result);
         }
 
